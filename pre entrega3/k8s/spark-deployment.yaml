@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-streaming
+  namespace: urban-streaming
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-streaming
+  template:
+    metadata:
+      labels:
+        app: spark-streaming
+    spec:
+      containers:
+        - name: spark-streaming
+          image: apache/spark:3.5.1-python3
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: spark-config
+          command:
+            - /opt/spark/bin/spark-submit
+          args:
+            - --conf
+            - spark.jars.ivy=/tmp/.ivy2
+            - --packages
+            - org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1
+            - /opt/spark-apps/spark_sensor_processor.py
+          volumeMounts:
+            - name: spark-code
+              mountPath: /opt/spark-apps
+      volumes:
+        - name: spark-code
+          configMap:
+            name: spark-code

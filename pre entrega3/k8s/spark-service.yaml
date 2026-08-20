@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-streaming
+  namespace: urban-streaming
+spec:
+  selector:
+    app: spark-streaming
+  ports:
+    - name: spark-ui
+      port: 4040
+      targetPort: 4040

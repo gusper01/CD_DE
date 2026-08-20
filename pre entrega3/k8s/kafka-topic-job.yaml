@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-urban-sensors-topic
+  namespace: urban-streaming
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: kafka-topic-init
+          image: confluentinc/cp-kafka:7.5.0
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Esperando a Kafka..."
+              cub kafka-ready -b kafka:29092 1 60
+              kafka-topics --bootstrap-server kafka:29092 \
+                --create --if-not-exists \
+                --topic urban_sensors \
+                --partitions 3 \
+                --replication-factor 1
+              kafka-topics --bootstrap-server kafka:29092 \
+                --describe \
+                --topic urban_sensors
