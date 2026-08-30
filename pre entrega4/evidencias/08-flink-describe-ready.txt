@@ -1,0 +1,87 @@
+(base) PS C:\Users\Lenovo\Documents\GitHub\CD_DE\pre entrega2\enviroments\dev> aws kinesisanalyticsv2 describe-application `
+>>   --application-name urban-stream-processing-dev `
+>>   --region us-east-1
+{
+    "ApplicationDetail": {
+        "ApplicationARN": "arn:aws:kinesisanalytics:us-east-1:389938726295:application/urban-stream-processing-dev",
+        "ApplicationDescription": "Procesamiento streaming de sensores urbanos con PyFlink",
+        "ApplicationName": "urban-stream-processing-dev",
+        "RuntimeEnvironment": "FLINK-1_19",
+        "ServiceExecutionRole": "arn:aws:iam::389938726295:role/flink-urban-stream-processing-dev",
+        "ApplicationStatus": "READY",
+        "ApplicationVersionId": 1,
+        "CreateTimestamp": "2026-08-29T14:47:02-03:00",
+        "LastUpdateTimestamp": "2026-08-29T14:47:02-03:00",
+        "ApplicationConfigurationDescription": {
+            "ApplicationCodeConfigurationDescription": {
+                "CodeContentType": "ZIPFILE",
+                "CodeContentDescription": {
+                    "CodeMD5": "3a4b3f65fd8fbc74b1ff326036710019",
+                    "CodeSize": 61728067,
+                    "S3ApplicationCodeLocationDescription": {
+                        "BucketARN": "arn:aws:s3:::coderhouse-urban-streaming-raw-gusper-dev",
+                        "FileKey": "flink/urban_flink.zip"
+                    }
+                }
+            },
+            "FlinkApplicationConfigurationDescription": {
+                "CheckpointConfigurationDescription": {
+                    "ConfigurationType": "CUSTOM",
+                    "CheckpointingEnabled": true,
+                    "CheckpointInterval": 60000,
+                    "MinPauseBetweenCheckpoints": 5000
+                },
+                "MonitoringConfigurationDescription": {
+                    "ConfigurationType": "CUSTOM",
+                    "MetricsLevel": "APPLICATION",
+                    "LogLevel": "INFO"
+                },
+                "ParallelismConfigurationDescription": {
+                    "ConfigurationType": "CUSTOM",
+                    "Parallelism": 1,
+                    "ParallelismPerKPU": 1,
+                    "CurrentParallelism": 1,
+                    "AutoScalingEnabled": false
+                }
+            },
+            "EnvironmentPropertyDescriptions": {
+                "PropertyGroupDescriptions": [
+                    {
+                        "PropertyGroupId": "kinesis.analytics.flink.run.options",
+                        "PropertyMap": {
+                            "jarfile": "lib/pyflink-dependencies.jar",
+			            {
+                        "PropertyGroupId": "consumer.config.0",
+                        "PropertyMap": {
+                            "aws.region": "us-east-1",
+                            "flink.stream.initpos": "LATEST",
+                            "stream.name": "urban-sensors-dev"
+                        }
+                    }
+                ]
+            },
+            "ApplicationSnapshotConfigurationDescription": {
+                "SnapshotsEnabled": true
+            },
+            "ApplicationSystemRollbackConfigurationDescription": {
+                "RollbackEnabled": false
+            },
+            "ApplicationEncryptionConfigurationDescription": {
+                "KeyType": "AWS_OWNED_KEY"
+            }
+        },
+        "CloudWatchLoggingOptionDescriptions": [
+            {
+                "CloudWatchLoggingOptionId": "1.1",
+                "LogStreamARN": "arn:aws:logs:us-east-1:389938726295:log-group:/aws/kinesis-analytics/urban-stream-processing-dev:log-stream:kinesis-analytics-log-stream"
+            }
+        ],
+        "ApplicationMaintenanceConfigurationDescription": {
+            "ApplicationMaintenanceWindowStartTime": "03:00",
+            "ApplicationMaintenanceWindowEndTime": "11:00"
+        },
+        "ApplicationVersionCreateTimestamp": "2026-08-29T14:47:02-03:00",
+        "ConditionalToken": "b2b5a895b0eb123d685ea48e549e43be",
+        "ApplicationMode": "STREAMING"
+    }
+}
