@@ -1,0 +1,17 @@
+﻿module.kinesis.aws_kinesis_stream.main: Refreshing state... [id=arn:aws:kinesis:us-east-1:389938726295:stream/urban-sensors-dev]
+module.flink.aws_iam_role.flink: Refreshing state... [id=flink-urban-stream-processing-dev]
+module.kinesis.aws_iam_role.firehose: Refreshing state... [id=firehose-kinesis-dev]
+module.flink.aws_cloudwatch_log_group.flink: Refreshing state... [id=/aws/kinesis-analytics/urban-stream-processing-dev]
+aws_s3_bucket.data_lake_rw: Refreshing state... [id=coderhouse-urban-streaming-raw-gusper-dev]
+module.kinesis.aws_cloudwatch_log_group.firehose: Refreshing state... [id=/aws/kinesisfirehose/ingesta-urban-sensors-dev]
+module.flink.aws_cloudwatch_log_stream.flink: Refreshing state... [id=kinesis-analytics-log-stream]
+module.kinesis.aws_cloudwatch_log_stream.firehose: Refreshing state... [id=S3Delivery]
+module.kinesis.aws_iam_role_policy.firehose: Refreshing state... [id=firehose-kinesis-dev:firehose-kinesis-policy]
+module.flink.aws_iam_role_policy.flink: Refreshing state... [id=flink-urban-stream-processing-dev:flink-urban-stream-processing-dev-policy]
+module.flink.aws_kinesisanalyticsv2_application.main: Refreshing state... [id=arn:aws:kinesisanalytics:us-east-1:389938726295:application/urban-stream-processing-dev]
+module.kinesis.aws_kinesis_firehose_delivery_stream.main: Refreshing state... [id=arn:aws:firehose:us-east-1:389938726295:deliverystream/ingesta-urban-sensors-dev]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.

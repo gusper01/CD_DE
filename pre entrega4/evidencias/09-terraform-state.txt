@@ -1,0 +1,12 @@
+﻿aws_s3_bucket.data_lake_rw
+module.flink.aws_cloudwatch_log_group.flink
+module.flink.aws_cloudwatch_log_stream.flink
+module.flink.aws_iam_role.flink
+module.flink.aws_iam_role_policy.flink
+module.flink.aws_kinesisanalyticsv2_application.main
+module.kinesis.aws_cloudwatch_log_group.firehose
+module.kinesis.aws_cloudwatch_log_stream.firehose
+module.kinesis.aws_iam_role.firehose
+module.kinesis.aws_iam_role_policy.firehose
+module.kinesis.aws_kinesis_firehose_delivery_stream.main
+module.kinesis.aws_kinesis_stream.main

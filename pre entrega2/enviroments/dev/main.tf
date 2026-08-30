@@ -2,26 +2,28 @@
 terraform {
   required_providers {
     aws = {
-        source = "hashicorp/aws"
-        version = "~>5.0"
+      source  = "hashicorp/aws"
+      version = "~>5.0"
+    }
   }
-}
 }
 
 # configurar region
-provider"aws" {
-    region = "us-east-1"
-  
+provider "aws" {
+  region = "us-east-1"
+
 }
 
 # configurar recursos bucket datos crudos
 resource "aws_s3_bucket" "data_lake_rw" {
-  bucket = "coderhouse-datalake-raw-prueba-semana1-gusper"
+  #  bucket = "coderhouse-datalake-raw-prueba-semana1-gusper"
+  bucket        = "coderhouse-urban-streaming-raw-gusper-dev"
   force_destroy = true
   tags = {
-        Enviroment = "Dev"
-        Project ="DataOps-Course"
-}    
+    Environment = "dev"
+    Project     = "urban-streaming"
+    ManagedBy   = "Terraform"
+  }
 }
 
 # Modulo Ingesta pre entrega 2
@@ -32,19 +34,33 @@ resource "aws_s3_bucket" "data_lake_rw" {
 # ------------------------------------
 
 module "kinesis" {
-    source = "../../modules/kinesis"
-    environment = "dev"
+  source      = "../../modules/kinesis"
+  environment = "dev"
 
-    stream_name = "clicks-ecommerce-dev"
-    shard_count = 2
+  stream_name = "urban-sensors-dev"
+  shard_count = 2
 
-    bucket_name = "coderhouse-datalake-algo"
+  bucket_name = aws_s3_bucket.data_lake_rw.bucket
 
-    # Buffering agresivo para ver resultados rápido en dev
-    #buffer_size_mb      = 5
-    #buffer_interval_sec = 60
+  # Buffering agresivo para ver resultados rápido en dev
+  #buffer_size_mb      = 5
+  #buffer_interval_sec = 60
 }
 
+module "flink" {
+  source = "../../modules/flink"
+
+  environment      = "dev"
+  application_name = "urban-stream-processing-dev"
+
+  kinesis_stream_name = module.kinesis.stream_name
+  kinesis_stream_arn  = module.kinesis.stream_arn
+
+  artifact_bucket_name = aws_s3_bucket.data_lake_rw.bucket
+  artifact_bucket_arn  = aws_s3_bucket.data_lake_rw.arn
+
+  artifact_key = "flink/urban_flink.zip"
+}
 
 # ------------------------------------------------------------------------------
 # OUTPUTS

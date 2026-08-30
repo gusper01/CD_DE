@@ -32,3 +32,10 @@ aws_credentials
 *.tfstate.*
 crash.log
 crash.*.log
+
+# ==============================================================================
+# MAVEN / PYFLINK - ARTEFACTOS GENERADOS
+# ==============================================================================
+**/target/
+pre entrega4/flink/lib/*.jar
+pre entrega4/flink/*.zip
