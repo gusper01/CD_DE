@@ -34,3 +34,38 @@ variable "artifact_key" {
   type        = string
   default     = "flink/urban_flink.zip"
 }
+
+variable "lakehouse_bucket_arn" {
+  description = "ARN del bucket S3 usado como Lakehouse Iceberg"
+  type        = string
+  default     = null
+}
+
+variable "glue_database_name" {
+  description = "Nombre de la base de datos de AWS Glue usada por Iceberg"
+  type        = string
+  default     = null
+}
+
+variable "python_file" {
+  description = "Archivo Python principal que ejecuta Managed Flink"
+  type        = string
+  default     = "urban_flink.py"
+}
+
+variable "lakehouse_bucket_name" {
+  description = "Nombre del bucket S3 usado como Lakehouse Iceberg"
+  type        = string
+  default     = null
+}
+
+variable "application_mode" {
+  description = "Modo de ejecución de la aplicación Flink: pyflink o java"
+  type        = string
+  default     = "pyflink"
+
+  validation {
+    condition     = contains(["pyflink", "java"], var.application_mode)
+    error_message = "application_mode debe ser 'pyflink' o 'java'."
+  }
+}
