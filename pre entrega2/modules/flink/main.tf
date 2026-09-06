@@ -1,6 +1,7 @@
 resource "aws_kinesisanalyticsv2_application" "main" {
-  name                   = var.application_name
-  description            = "Procesamiento streaming de sensores urbanos con PyFlink"
+  name = var.application_name
+  #description            = "Procesamiento streaming de sensores urbanos con PyFlink"
+  description            = "Procesamiento streaming de sensores urbanos con Apache Flink"
   runtime_environment    = "FLINK-1_19"
   service_execution_role = aws_iam_role.flink.arn
   start_application      = false
@@ -23,12 +24,16 @@ resource "aws_kinesisanalyticsv2_application" "main" {
     }
 
     environment_properties {
-      property_group {
-        property_group_id = "kinesis.analytics.flink.run.options"
+      dynamic "property_group" {
+        for_each = var.application_mode == "pyflink" ? [1] : []
 
-        property_map = {
-          python = "urban_flink.py"
-          jarfile = "lib/pyflink-dependencies.jar"
+        content {
+          property_group_id = "kinesis.analytics.flink.run.options"
+
+          property_map = {
+            python  = var.python_file
+            jarfile = "lib/pyflink-dependencies.jar"
+          }
         }
       }
 
@@ -36,9 +41,19 @@ resource "aws_kinesisanalyticsv2_application" "main" {
         property_group_id = "consumer.config.0"
 
         property_map = {
-          "stream.name" = var.kinesis_stream_name
-          "aws.region"  = "us-east-1"
+          "stream.name"          = var.kinesis_stream_name
+          "stream.arn"           = var.kinesis_stream_arn
+          "aws.region"           = "us-east-1"
           "flink.stream.initpos" = "LATEST"
+        }
+      }
+      property_group {
+        property_group_id = "lakehouse.config.0"
+
+        property_map = {
+          "glue.database"    = var.glue_database_name
+          "lakehouse.bucket" = var.lakehouse_bucket_name
+          "aws.region"       = "us-east-1"
         }
       }
     }
@@ -46,9 +61,9 @@ resource "aws_kinesisanalyticsv2_application" "main" {
     flink_application_configuration {
 
       checkpoint_configuration {
-        configuration_type = "CUSTOM"
-        checkpointing_enabled = true
-        checkpoint_interval = 60000
+        configuration_type            = "CUSTOM"
+        checkpointing_enabled         = true
+        checkpoint_interval           = 60000
         min_pause_between_checkpoints = 5000
       }
 
