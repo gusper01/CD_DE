@@ -39,3 +39,4 @@ crash.*.log
 **/target/
 pre entrega4/flink/lib/*.jar
 pre entrega4/flink/*.zip
+proyecto final/terraform/environments/dev/backend.hcl
